@@ -26,7 +26,7 @@ async def build_dispatcher(bot: Bot) -> tuple[Dispatcher, I18nMiddleware]:
     dp = Dispatcher(storage=MemoryStorage())
     dp.include_router(router)
 
-    i18n = I18nMiddleware(core=i18n_core, default_locale="ru")
+    i18n = I18nMiddleware(core=i18n_core, default_locale="fa")
     i18n.setup(dispatcher=dp)
     dp.update.outer_middleware(LocaleMiddleware())
     dp.update.outer_middleware(DatabaseMiddleware())
