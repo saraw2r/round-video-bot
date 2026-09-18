@@ -53,7 +53,20 @@ def encode_segment(
             **opts,
         ).overwrite_output().run(capture_stdout=True, capture_stderr=True, quiet=True)
     except ffmpeg.Error as e:
-        logger.error("Error encoding segment: %s", e.stderr.decode() if e.stderr else "unknown error")
+        logger.error(
+            "FFmpeg failed to encode segment (in_path=%s, out_path=%s, start=%s, "
+            "duration=%s, overlay_type=%s, has_audio=%s, cmd=%s)\nstdout:\n%s\nstderr:\n%s",
+            in_path,
+            out_path,
+            start,
+            duration,
+            overlay_type,
+            has_audio,
+            getattr(e, "cmd", "unknown"),
+            e.stdout.decode(errors="replace") if e.stdout else "<empty>",
+            e.stderr.decode(errors="replace") if e.stderr else "<empty>",
+            exc_info=True,
+        )
         raise
 
     return int(float(ffmpeg.probe(str(out_path))["format"]["duration"]))
