@@ -36,5 +36,9 @@ async def handle_errors(
 
     else:
         if not isinstance(exc, (TelegramBadRequest, TelegramForbiddenError)):
-            logger.exception("Unexpected error in pipeline")
+            logger.exception(
+                "Unexpected error in pipeline: %s: %s",
+                type(exc).__name__,
+                exc,
+            )
         await status_msg.edit_text(i18n.get("error-processing"))

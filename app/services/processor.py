@@ -45,6 +45,15 @@ async def process_and_send(
         await status_msg.delete()
 
     except Exception as exc:
+        logger.exception(
+            "Failed to process and send video (source=%s, chat_id=%s, "
+            "original_msg_id=%s, overlay=%s): %s",
+            source,
+            chat_id,
+            original_msg_id,
+            overlay,
+            exc,
+        )
         await handle_errors(exc, source, status_msg, i18n)
 
     finally:
